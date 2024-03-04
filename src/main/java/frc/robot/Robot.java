@@ -23,7 +23,12 @@ public class Robot extends TimedRobot {
   private final PWMSparkMax m_leftDriveFollower = new PWMSparkMax(3);
   private final PWMSparkMax m_rightDriveFollower = new PWMSparkMax(1);
   private final PWMSparkMax m_intake = new PWMSparkMax(4);
-  private final PWMSparkMax m_shooter = new PWMSparkMax(5);
+  private final PWMSparkMax m_shooter1 = new PWMSparkMax(5);
+  private final PWMSparkMax m_shooter2 = new PWMSparkMax(6);
+  private final PWMSparkMax m_chainArm1 = new PWMSparkMax(7);
+  private final PWMSparkMax m_chainArm2 = new PWMSparkMax(8);
+  private final PWMSparkMax m_shooterArm1 = new PWMSparkMax(9);
+  private final PWMSparkMax m_shooterArm2 = new PWMSparkMax(10);
   private final DifferentialDrive m_robotDrive =
       new DifferentialDrive(m_leftDrive::set, m_rightDrive::set);
   private final XboxController m_controller = new XboxController(0);
@@ -65,9 +70,6 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     m_robotDrive.arcadeDrive(-m_controller.getLeftY(), -m_controller.getRightX());
 
-    // press to start turning then stop when switch is activated or button is pressed again
-    // use boolean to store state of intake motor spinning
-    // need to initialize the switch
     if (m_controller.getXButton()) {
       m_intake.set(-0.25);
 
@@ -75,8 +77,14 @@ public class Robot extends TimedRobot {
       m_intake.set(0.0);
     }
 
-    // shooters are opposite of each other
-    // need to initialize the second
+    if (m_controller.getBButton()) {
+      m_shooter1.set(0.5);
+      m_shooter2.set(-0.5);
+
+    } else {
+      m_shooter1.set(0.0);
+      m_shooter2.set(0.0);
+    }
   }
 
   /** This function is called once each time the robot enters test mode. */
