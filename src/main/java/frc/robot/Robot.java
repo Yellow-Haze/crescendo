@@ -26,19 +26,19 @@ public class Robot extends TimedRobot {
   private CANSparkMax m_intake;
   private CANSparkMax m_shooter1;
   private CANSparkMax m_shooter2;
-  // private PWMSparkMax m_climber1;
-  // private PWMSparkMax m_climber2;
+  private CANSparkMax m_climber1;
+  private CANSparkMax m_climber2;
   private CANSparkMax m_shooterArm1;
   private CANSparkMax m_shooterArm2;
-  private DifferentialDrive m_robotDrive;
   private XboxController m_controller;
+  private DifferentialDrive m_robotDrive;
   private Timer m_timer;
   private boolean shooterEnabled;
   private double startTime;
 
   public Robot() {
-    //SendableRegistry.addChild(m_robotDrive, m_leftDrive);
-    //SendableRegistry.addChild(m_robotDrive, m_rightDrive);
+    // SendableRegistry.addChild(m_robotDrive, m_leftDrive);
+    // SendableRegistry.addChild(m_robotDrive, m_rightDrive);
   }
 
   /**
@@ -54,17 +54,15 @@ public class Robot extends TimedRobot {
     m_intake = new CANSparkMax(10, MotorType.kBrushless);
     m_shooter1 = new CANSparkMax(8, MotorType.kBrushed);
     m_shooter2 = new CANSparkMax(9, MotorType.kBrushed);
-    // m_climber1 = new PWMSparkMax(7);
-    // m_climber2 = new PWMSparkMax(8);
+    m_climber1 = new CANSparkMax(11, MotorType.kBrushed);
+    m_climber2 = new CANSparkMax(12, MotorType.kBrushed);
     m_shooterArm1 = new CANSparkMax(6, MotorType.kBrushless);
     m_shooterArm2 = new CANSparkMax(7, MotorType.kBrushless);
     m_controller = new XboxController(0);
     m_timer = new Timer();
     shooterEnabled = false;
-
     m_leftDriveFollower.follow(m_leftDrive);
     m_rightDriveFollower.follow(m_rightDrive);
-
     m_robotDrive = new DifferentialDrive(m_leftDrive, m_rightDrive);
   }
 
@@ -130,7 +128,6 @@ public class Robot extends TimedRobot {
     }
     if (m_controller.getXButton()) {
       m_intake.set(0.7);
-      return;
 
     } else {
       m_intake.set(0.0);
@@ -166,6 +163,25 @@ public class Robot extends TimedRobot {
     } else {
       m_shooterArm1.set(0.0);
       m_shooterArm2.set(0.0);
+    }
+
+    // CLIMBERS
+    if (m_controller.getPOV() == 0) {
+      m_climber1.set(0.5);
+      m_climber2.set(-0.5);
+      return;
+
+    } else {
+      m_climber1.set(0.0);
+      m_climber2.set(0.0);
+    }
+    if (m_controller.getPOV() == 180) {
+      m_climber1.set(-0.5);
+      m_climber2.set(0.5);
+
+    } else {
+      m_climber1.set(0.0);
+      m_climber2.set(0.0);
     }
   }
 
