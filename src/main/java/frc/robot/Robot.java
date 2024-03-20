@@ -7,6 +7,7 @@ package frc.robot;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
@@ -64,6 +65,7 @@ public class Robot extends TimedRobot {
     m_leftDriveFollower.follow(m_leftDrive);
     m_rightDriveFollower.follow(m_rightDrive);
     m_robotDrive = new DifferentialDrive(m_leftDrive, m_rightDrive);
+    CameraServer.startAutomaticCapture();
   }
 
   /** This function is run once each time the robot enters autonomous mode. */
@@ -121,7 +123,7 @@ public class Robot extends TimedRobot {
     // INTAKE
     if (m_controller.getLeftBumper()) {
       m_intake.set(-0.6);
-    }
+    } 
     if (m_controller.getXButton()) {
       m_intake.set(0.7);
     }
