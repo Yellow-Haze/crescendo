@@ -121,15 +121,11 @@ public class Robot extends TimedRobot {
     // INTAKE
     if (m_controller.getLeftBumper()) {
       m_intake.set(-0.6);
-      return;
-
-    } else {
-      m_intake.set(0.0);
     }
     if (m_controller.getXButton()) {
       m_intake.set(0.7);
-
-    } else {
+    }
+    if (!m_controller.getLeftBumper() && !m_controller.getXButton()) {
       m_intake.set(0.0);
     }
 
@@ -150,37 +146,33 @@ public class Robot extends TimedRobot {
     if (m_controller.getYButton()) {
       m_shooterArm1.set(0.2);
       m_shooterArm2.set(-0.2);
-      return;
-
-    } else {
-      m_shooterArm1.set(0.0);
-      m_shooterArm2.set(0.0);
     }
     if (m_controller.getAButton()) {
-      m_shooterArm1.set(-0.1);
-      m_shooterArm2.set(0.1);
-
-    } else {
+      m_shooterArm1.set(-0.2);
+      m_shooterArm2.set(0.2);
+    }
+    if (!m_controller.getYButton() && !m_controller.getAButton()) {
       m_shooterArm1.set(0.0);
       m_shooterArm2.set(0.0);
     }
 
     // CLIMBERS
-    if (m_controller.getPOV() == 0) {
-      m_climber1.set(0.5);
-      m_climber2.set(-0.5);
-      return;
-
-    } else {
+    if (m_controller.getRightTriggerAxis() > 0.1) {
+      m_climber1.set(1.0);
+    }
+    if (m_controller.getLeftTriggerAxis() > 0.1) {
+      m_climber1.set(-1.0);
+    }
+    if (m_controller.getRightTriggerAxis() <= 0.1 && m_controller.getLeftTriggerAxis() <= 0.1) {
       m_climber1.set(0.0);
-      m_climber2.set(0.0);
     }
     if (m_controller.getPOV() == 180) {
-      m_climber1.set(-0.5);
-      m_climber2.set(0.5);
-
-    } else {
-      m_climber1.set(0.0);
+      m_climber2.set(1.0);
+    }
+    if (m_controller.getPOV() == 0) {
+      m_climber2.set(-1.0);
+    }
+    if (m_controller.getPOV() != 180 && m_controller.getPOV() != 0) {
       m_climber2.set(0.0);
     }
   }
