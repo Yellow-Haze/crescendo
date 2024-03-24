@@ -9,14 +9,16 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the manifest file in the resource
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to
+ * each mode, as described in the TimedRobot documentation. If you change the
+ * name of this class or
+ * the package after creating this project, you must also update the manifest
+ * file in the resource
  * directory.
  */
 public class Robot extends TimedRobot {
@@ -33,17 +35,15 @@ public class Robot extends TimedRobot {
   private CANSparkMax m_shooterArm2;
   private XboxController m_controller;
   private DifferentialDrive m_robotDrive;
-  private Timer m_timer;
   private boolean shooterEnabled;
-  private double startTime;
+  private long startTime;
 
   public Robot() {
-    // SendableRegistry.addChild(m_robotDrive, m_leftDrive);
-    // SendableRegistry.addChild(m_robotDrive, m_rightDrive);
   }
 
   /**
-   * This function is run when the robot is first started up and should be used for any
+   * This function is run when the robot is first started up and should be used
+   * for any
    * initialization code.
    */
   @Override
@@ -60,7 +60,6 @@ public class Robot extends TimedRobot {
     m_shooterArm1 = new CANSparkMax(6, MotorType.kBrushless);
     m_shooterArm2 = new CANSparkMax(7, MotorType.kBrushless);
     m_controller = new XboxController(0);
-    m_timer = new Timer();
     shooterEnabled = false;
     m_leftDriveFollower.follow(m_leftDrive);
     m_rightDriveFollower.follow(m_rightDrive);
@@ -71,49 +70,92 @@ public class Robot extends TimedRobot {
   /** This function is run once each time the robot enters autonomous mode. */
   @Override
   public void autonomousInit() {
-    // startTime = Timer.getFPGATimestamp();
-    m_timer.restart();
+    startTime = System.currentTimeMillis();
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    // double time = Timer.getFPGATimestamp();
-    // m_leftDrive.set(0.0);
-    // m_rightDrive.set(0.0);
-    // m_leftDriveFollower.follow(m_leftDrive);
-    // m_rightDriveFollower.follow(m_rightDrive);
-    // if(time - startTime < 1.0){
-    //   m_leftDrive.set(-0.4);
-    //   m_rightDrive.set(0.4);
-    //   m_intake.set(-0.4);
-    // } else if (time - startTime < 2.0){
-    //   m_leftDrive.set(0.0);
-    //   m_rightDrive.set(0.0);
-    // } else if (time - startTime < 4.5){
-    //   m_leftDrive.set(-0.37);
-    //   m_rightDrive.set(-0.37);
-    //   m_intake.set(0.0);
-    // } else if (time - startTime < 4.65){
-    //   m_leftDrive.set(0.0);
-    //   m_rightDrive.set(0.0);
-    // } else if (time - startTime < 6.0){
-    //   m_shooter1.set(-0.5);
-    //   m_shooter2.set(-0.5);
-    // } else if (time - startTime < 7.0){
-    //   m_intake.set(-0.5);
-    // } else {
-    //   m_leftDrive.set(0.0);
-    //   m_rightDrive.set(0.0);
-    //   m_intake.set(0.0);
-    //   m_shooter1.set(0);
-    //   m_shooter2.set(0);
+    long timeSinceStart = System.currentTimeMillis() - startTime;
+    // 2-NOTE CENTER AUTO
+    // if (timeSinceStart < 500) {
+    // m_shooterArm1.set(-0.2);
+    // m_shooterArm2.set(0.2);
+
+    // } else if (timeSinceStart > 500 && timeSinceStart < 1000) {
+    // m_shooterArm1.set(0.0);
+    // m_shooterArm2.set(0.0);
+    // m_shooter1.set(-0.85);
+    // m_shooter2.set(-0.85);
+
+    // } else if (timeSinceStart > 1000 && timeSinceStart < 2000) {
+    // m_intake.set(-0.85);
+
+    // } else if (timeSinceStart > 2000 && timeSinceStart < 4500) {
+    // m_shooter1.set(0.0);
+    // m_shooter2.set(0.0);
+    // m_robotDrive.arcadeDrive(0.0, 0.5);
+
+    // } else if (timeSinceStart > 4500 && timeSinceStart < 4700) {
+    // m_robotDrive.stopMotor();
+
+    // } else if (timeSinceStart > 4700 && timeSinceStart < 7200) {
+    // m_intake.set(0.0);
+    // m_robotDrive.arcadeDrive(0.0, -0.5);
+
+    // } else if (timeSinceStart > 7200 && timeSinceStart < 7500) {
+    // m_robotDrive.stopMotor();
+    // m_shooter1.set(0.5);
+    // m_shooter2.set(0.5);
+    // m_intake.set(0.5);
+
+    // } else if (timeSinceStart > 7500 && timeSinceStart < 8000) {
+    // m_shooter1.set(-0.85);
+    // m_shooter2.set(-0.85);
+    // m_intake.set(0.0);
+
+    // } else if (timeSinceStart > 8000 && timeSinceStart < 9000) {
+    // m_intake.set(-0.85);
+
+    // } else if (timeSinceStart > 9000 && timeSinceStart < 11500) {
+    // m_shooter1.set(0.0);
+    // m_shooter2.set(0.0);
+    // m_intake.set(0.0);
+    // m_robotDrive.arcadeDrive(0.0, 0.5);
+
+    // } else if (timeSinceStart > 11500) {
+    // m_robotDrive.stopMotor();
     // }
+    // ONE NOTE FAR SIDE
+    if (timeSinceStart < 500) {
+      m_shooterArm1.set(-0.2);
+      m_shooterArm2.set(0.2);
+
+    } else if (timeSinceStart > 500 && timeSinceStart < 1000) {
+      m_shooterArm1.set(0.0);
+      m_shooterArm2.set(0.0);
+      m_shooter1.set(-0.85);
+      m_shooter2.set(-0.85);
+
+    } else if (timeSinceStart > 1000 && timeSinceStart < 2000) {
+      m_intake.set(-0.85);
+
+    } else if (timeSinceStart > 2000 && timeSinceStart < 9000) {
+      m_shooter1.set(0.0);
+      m_shooter2.set(0.0);
+      m_robotDrive.arcadeDrive(0.0, 0.5);
+
+    } else if (timeSinceStart > 9000) {
+      m_robotDrive.stopMotor();
+    }
   }
 
-  /** This function is called once each time the robot enters teleoperated mode. */
+  /**
+   * This function is called once each time the robot enters teleoperated mode.
+   */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+  }
 
   /** This function is called periodically during teleoperated mode. */
   @Override
@@ -122,10 +164,10 @@ public class Robot extends TimedRobot {
 
     // INTAKE
     if (m_controller.getLeftBumper()) {
-      m_intake.set(-0.6);
-    } 
+      m_intake.set(-0.7);
+    }
     if (m_controller.getXButton()) {
-      m_intake.set(0.7);
+      m_intake.set(0.8);
     }
     if (!m_controller.getLeftBumper() && !m_controller.getXButton()) {
       m_intake.set(0.0);
@@ -136,8 +178,8 @@ public class Robot extends TimedRobot {
       shooterEnabled = !shooterEnabled;
     }
     if (shooterEnabled) {
-      m_shooter1.set(-0.75);
-      m_shooter2.set(-0.75);
+      m_shooter1.set(-0.85);
+      m_shooter2.set(-0.85);
 
     } else {
       m_shooter1.set(0.0);
@@ -146,8 +188,8 @@ public class Robot extends TimedRobot {
 
     // SHOOTER ARM
     if (m_controller.getYButton()) {
-      m_shooterArm1.set(0.2);
-      m_shooterArm2.set(-0.2);
+      m_shooterArm1.set(0.35);
+      m_shooterArm2.set(-0.35);
     }
     if (m_controller.getAButton()) {
       m_shooterArm1.set(-0.2);
@@ -181,9 +223,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters test mode. */
   @Override
-  public void testInit() {}
+  public void testInit() {
+  }
 
   /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+  }
 }
